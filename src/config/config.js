@@ -24,8 +24,7 @@ let urlDB;
 if(process.env.NODE_ENV === 'dev'){
     urlDB = 'mongodb://localhost/bodega'
 }else{
-    urlDB = 'mongodb+srv://bodega108:oHnGdtpQqnky5UYS@cluster0-p5emg.mongodb.net/test?retryWrites=true&w=majority'
-
+    urlDB = process.env.MONGO_URI;
 }
 
 process.env.URLDB = urlDB;
