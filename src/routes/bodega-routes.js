@@ -3,10 +3,13 @@ const Usuario = require('../models/usuario');
 const bcrypt = require('bcrypt');
 const routes = express.Router();
 const _ =require('underscore')
+const {verificaToken, verificaRole}=require('../middlewares/autenticacion')
 
 
-routes.get('/users',async(req,res)=>{
+routes.get('/users',verificaToken,(req,res)=>{
     
+  
+
     let desde = req.query.desde || 0;
     desde = Number(desde);
 
@@ -34,7 +37,7 @@ routes.get('/users',async(req,res)=>{
 })
 
 
-routes.post('/users',(req,res)=>{
+routes.post('/users',[verificaToken,verificaRole],(req,res)=>{
     let body = req.body;
 
     let usuario = new Usuario({
@@ -61,11 +64,11 @@ routes.post('/users',(req,res)=>{
 })
 
 
-routes.put('/users/:id',async (req,res)=>{
+routes.put('/users/:id',[verificaToken,verificaRole], (req,res)=>{
     let id = req.params.id; 
     let body = _.pick(req.body,['nombre','email','role','estado']);
 
-     await Usuario.findOneAndUpdate(id,body,{new:true},(err, usuarioDB)=>{
+      Usuario.findOneAndUpdate(id,body,{new:true},(err, usuarioDB)=>{
         
         if(err){
             return res.status(400).json({
@@ -84,7 +87,7 @@ routes.put('/users/:id',async (req,res)=>{
 })
 
 
-routes.delete('/users/:id',(req,res)=>{
+routes.delete('/users/:id', [verificaToken,verificaRole],(req,res)=>{
     let id= req.params.id;
 
     Usuario.findByIdAndRemove(id,(err, usuarioBorrado)=>{

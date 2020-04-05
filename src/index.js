@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(morgan('dev'));
 
 //routes
-app.use('/api',require('./routes/bodega-routes'))
+app.use('/api',require('./routes/index'))
 //start server
 
 app.listen(process.env.PORT,()=>{
