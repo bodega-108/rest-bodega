@@ -14,10 +14,9 @@ const app = express();
 
 app.use(express.json());
 app.use(morgan('dev'));
-app.use(cors);
 
 //routes
-
+app.use('/api',require('./routes/bodega-routes'))
 //start server
 
 app.listen(process.env.PORT,()=>{
